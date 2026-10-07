@@ -2,3 +2,6 @@ title: zeno-articles
 description: 일일 회고 — 짧게 남기는 개발 교훈
 theme: jekyll-theme-minimal
 lang: ko
+baseurl: "/dev-articles"
+url: "https://zeno0505.github.io"
+permalink: /:year/:month/:day/:title/
