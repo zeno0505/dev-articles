@@ -35,8 +35,16 @@ a:hover{ color:var(--link-hover); }
 .intro{ margin:8px 0 36px; }
 .intro h1{ font-size:1.6rem; line-height:1.35; margin:0 0 6px; letter-spacing:-.02em; }
 .intro p{ margin:0; color:var(--muted); font-size:.95rem; }
-/* 이 블로그가 어떻게 쓰이는지 — 홈(목록)에서만 노출. --muted 대비: 라이트 6.1:1, 다크 7.4:1 */
-.intro .intro-about{ margin-top:12px; font-size:.875rem; line-height:1.7; max-width:36em; }
+/* 이 블로그가 어떻게 쓰이는지 — 홈(목록)에서만 노출. --muted 대비: 라이트 6.1:1, 다크 7.4:1
+   데스크톱에서는 쉼표 뒤(<br class="br-desktop">)에서 끊고, 모바일에서는 자연 개행(keep-all). */
+.intro .intro-about{
+  margin-top:12px; font-size:.875rem; line-height:1.7;
+  max-width:42em; word-break:keep-all; overflow-wrap:anywhere;
+}
+.br-desktop{ display:none; }
+@media (min-width:640px){
+  .br-desktop{ display:inline; }
+}
 
 /* ---------- post ---------- */
 .post-header{ margin:8px 0 36px; }
