@@ -1,7 +1,20 @@
 title: zeno-articles
 description: 일일 회고 — 짧게 남기는 개발 교훈
-theme: jekyll-theme-minimal
+author: zeno0505
 lang: ko
 baseurl: "/dev-articles"
 url: "https://zeno0505.github.io"
 permalink: /:year/:month/:day/:title/
+timezone: Asia/Seoul
+# 원격 테마 없이 저장소 안의 _layouts + assets/css만 사용 (GitHub Pages 기본 빌드로 그대로 동작)
+plugins:
+  - jekyll-feed      # /feed.xml → 프로필 README 자동 갱신의 입력
+  - jekyll-seo-tag
+feed:
+  posts_limit: 20
+defaults:
+  - scope: { path: "", type: posts }
+    values: { layout: post }
+exclude: [README.md]
+# 홈 목록 요약: front matter `description`이 있으면 그것을, 없으면 본문 첫 문단(빈 줄 전까지)을 쓴다.
+excerpt_separator: "\n\n"

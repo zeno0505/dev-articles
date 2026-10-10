@@ -1,0 +1,20 @@
+---
+layout: default
+---
+<section class="intro">
+  <h1>일일 회고</h1>
+  <p>{{ site.description | remove: "일일 회고 — " }}</p>
+</section>
+<ol class="post-list" reversed>
+  {% for post in site.posts %}
+  <li>
+    <article>
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y. %-m. %-d." }}</time>
+      <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+      {% if post.description and post.description != "" %}{% assign summary = post.description %}{% else %}{% assign summary = post.excerpt %}{% endif %}
+      {% assign summary = summary | strip_html | normalize_whitespace | strip | truncate: 140 %}
+      {% if summary != "" %}<p class="excerpt">{{ summary }}</p>{% endif %}
+    </article>
+  </li>
+  {% endfor %}
+</ol>

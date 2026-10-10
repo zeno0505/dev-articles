@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<article class="post">
+  <header class="post-header">
+    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %-m월 %-d일" }}</time>{% if page.categories.size > 0 %} · {{ page.categories | join: ", " }}{% endif %}</p>
+    <h1 class="post-title">{{ page.title }}</h1>
+  </header>
+  <div class="post-body">{{ content }}</div>
+  <nav class="post-nav" aria-label="이전·다음 글">
+    {% if page.previous %}<a class="prev" href="{{ page.previous.url | relative_url }}"><span>이전 글</span>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
+    {% if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><span>다음 글</span>{{ page.next.title }}</a>{% endif %}
+  </nav>
+  <p class="back"><a href="{{ '/' | relative_url }}">← 전체 글</a></p>
+</article>
