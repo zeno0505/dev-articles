@@ -35,6 +35,8 @@ a:hover{ color:var(--link-hover); }
 .intro{ margin:8px 0 36px; }
 .intro h1{ font-size:1.6rem; line-height:1.35; margin:0 0 6px; letter-spacing:-.02em; }
 .intro p{ margin:0; color:var(--muted); font-size:.95rem; }
+/* 이 블로그가 어떻게 쓰이는지 — 홈(목록)에서만 노출. --muted 대비: 라이트 6.1:1, 다크 7.4:1 */
+.intro .intro-about{ margin-top:12px; font-size:.875rem; line-height:1.7; max-width:36em; }
 
 /* ---------- post ---------- */
 .post-header{ margin:8px 0 36px; }
