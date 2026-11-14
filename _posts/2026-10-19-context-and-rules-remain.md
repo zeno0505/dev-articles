@@ -1,6 +1,7 @@
 ---
 title: "모델은 바뀌어도, 에이전트의 맥락과 규칙은 남는다"
 date: 2026-10-19
+published: false
 categories: [일일 회고]
 ---
 

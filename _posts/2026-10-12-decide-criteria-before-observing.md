@@ -1,6 +1,7 @@
 ---
 title: "에이전트가 관측하기 전에, 무엇을 기준으로 볼지부터 정한다"
 date: 2026-10-12
+published: false
 categories: [일일 회고]
 ---
 

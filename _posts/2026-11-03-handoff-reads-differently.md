@@ -1,6 +1,7 @@
 ---
 title: "건넨 것은 받는 쪽 환경에서 다시 읽힌다"
 date: 2026-11-03
+published: false
 categories: [일일 회고]
 ---
 

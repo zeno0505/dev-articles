@@ -1,6 +1,7 @@
 ---
 title: "신호가 조용할수록 보던 자리부터 의심한다"
 date: 2026-11-02
+published: false
 categories: [일일 회고]
 ---
 
