@@ -1,6 +1,7 @@
 ---
 title: "늘리기 전에, 묻기 전에, 다시 쓰기 전에 비용부터 본다"
 date: 2026-10-21
+published: false
 categories: [일일 회고]
 ---
 

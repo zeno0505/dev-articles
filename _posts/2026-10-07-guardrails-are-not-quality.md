@@ -1,6 +1,7 @@
 ---
 title: "가드레일을 통과했다고 품질이 오른 건 아니다"
 date: 2026-10-07
+published: false
 categories: [일일 회고]
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "정상으로 보이는 경우까지 적고, 굴릴 수 있는 데서 끊는다"
 date: 2026-10-26
+published: false
 categories: [일일 회고]
 ---
 

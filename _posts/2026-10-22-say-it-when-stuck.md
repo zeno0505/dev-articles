@@ -1,6 +1,7 @@
 ---
 title: "막히면 말하고, 대신하면 좁힌다"
 date: 2026-10-22
+published: false
 categories: [일일 회고]
 ---
 

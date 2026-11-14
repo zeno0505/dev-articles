@@ -1,6 +1,7 @@
 ---
 title: "사람의 주의는 아끼고, 상태는 저장소에 둔다"
 date: 2026-10-23
+published: false
 categories: [일일 회고]
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "에이전트 결과물을 믿게 만드는 건 구조다"
 date: 2026-10-10
+published: false
 categories: [일일 회고]
 ---
 

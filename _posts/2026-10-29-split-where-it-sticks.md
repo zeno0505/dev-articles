@@ -1,6 +1,7 @@
 ---
 title: "급한 쪽부터 자르고, 고칠 자리는 가리키고, 원문은 그대로 둔다"
 date: 2026-10-29
+published: false
 categories: [일일 회고]
 ---
 

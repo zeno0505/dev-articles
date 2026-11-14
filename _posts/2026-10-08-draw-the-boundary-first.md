@@ -1,6 +1,7 @@
 ---
 title: "확장하기 전에 경계부터 긋는다"
 date: 2026-10-08
+published: false
 categories: [일일 회고]
 ---
 
