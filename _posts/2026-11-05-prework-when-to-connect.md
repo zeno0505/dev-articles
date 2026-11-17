@@ -70,7 +70,7 @@ deviceMemory는 비표준이고, 지금은 Discontinued Draft입니다. hardware
 
 확인은 페인트 시각과 긴 작업을 같이 봅니다. PerformancePaintTiming의 first-contentful-paint와, 긴 작업 항목의 개수와 합을 적습니다. CPU를 느리게 둔 뒤에도 같은 분량의 일이 길어지는지, shouldPreload()가 값이 없을 때 false를 주는지를 봅니다.
 
-Headless Chrome 157에서 부모 문서에 제목을 바로 그려 두고, display:none iframe이 고정된 양의 일을 하는 스크립트를 불러오게 했습니다. 이 환경의 deviceMemory는 16, hardwareConcurrency는 8, saveData는 false였고, localhost라 보안 맥락은 true였습니다. preload가 없을 때 first-contentful-paint 중앙값은 1배속에서 40ms, 8배속에서는 124ms였고 긴 작업은 거의 없었습니다. 숨은 iframe을 붙이면 페인트는 1배속에서 40ms, 8배속에서 164ms로 비슷했지만, 긴 작업 총합 중앙값은 280ms에서 2,424ms로 늘었습니다. 이 수치는 실험실에서 잰 값이고, 제품 체감을 대체하지는 않습니다.
+Headless Chrome 157에서 부모 문서에 제목을 바로 그려 두고, display:none iframe이 고정된 양의 일을 하는 스크립트를 불러오게 했습니다. 이 환경의 deviceMemory는 16, hardwareConcurrency는 8, saveData는 false였고, localhost라 보안 맥락은 true였습니다. preload가 없을 때 first-contentful-paint 중앙값은 1배속에서 40ms, 8배속에서는 124ms였고 긴 작업은 거의 없었습니다. 숨은 iframe을 붙이면 페인트는 1배속에서 40ms, 8배속에서 164ms로 비슷했지만, 긴 작업 총합 중앙값은 280ms에서 2,424ms로 늘었습니다.
 
 저는 업로드 창을 빨리 열려고 항상 켜 두었다가, 사양이 낮은 기기에서 첫 화면이 무거워질 수 있어 그 기기에서는 끄기로 했습니다. 다시 재어 보니 그 비용은 페인트 숫자보다 긴 작업으로 나타났고, 같은 일이 느린 CPU에서 훨씬 길었습니다.
 
