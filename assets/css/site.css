@@ -100,3 +100,12 @@ pre{ background:var(--code-bg); color:var(--code-fg); border:1px solid var(--lin
 .excerpt{ margin:0; color:var(--muted); font-size:.9375rem; line-height:1.65;
   display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1; overflow:hidden; }
 @media (max-width:480px){ .excerpt{ -webkit-line-clamp:2; } }
+
+/* mermaid 도식은 코드 블록이 아니라 그림으로 둔다 */
+.post-body pre.mermaid{
+  background:transparent; border:0; color:inherit; font-family:var(--font);
+  font-size:1rem; padding:0; overflow:visible; text-align:center;
+}
+.post-body pre.mermaid svg{ max-width:100%; height:auto; }
+.post-body pre.mermaid .nodeLabel,
+.post-body pre.mermaid foreignObject{ word-break:keep-all; overflow-wrap:anywhere; }

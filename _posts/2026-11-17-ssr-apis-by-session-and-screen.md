@@ -28,7 +28,18 @@ description: "서버가 페이지를 그리는 시점에 로그인 확인과 설
 
 아래는 그 구분을 Nuxt 3의 useCookie와 useFetch로 옮긴 일반 예시입니다. useCookie는 서버와 클라이언트에서 쿠키를 읽을 수 있고, useFetch는 기본이 서버에서도 호출이며, `server: false`와 `immediate: false`로 그 시점을 옮길 수 있습니다.
 
-![세션 쿠키 유무와 첫 화면 필요 여부로 SSR API 호출을 나눈다](/dev-articles/assets/2026-11-17-ssr-apis-by-session-and-screen-01.png)
+```mermaid
+flowchart TD
+  req[페이지 요청] --> page[페이지 API]
+  req --> cookie{세션 쿠키가 있나}
+  cookie -->|있다| session[로그인 확인 API]
+  cookie -->|없다| skip[로그인 확인 생략]
+  page --> first[첫 화면 렌더]
+  session --> first
+  skip --> first
+  first --> settings[설정: 쓰는 화면에서만 클라이언트 호출]
+  first --> extra[부가 UI: 열 때 호출]
+```
 
 ```vue
 <script setup lang="ts">
