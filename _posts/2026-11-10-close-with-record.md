@@ -71,7 +71,7 @@ export function useParentSubscription(connect) {
 
 ### 울리지 않는 콜백과 남아 있는 리스너
 
-같은 상황을 일반 예시로 다시 재어 보니, 문제는 콜백이 계속 울리는 쪽이 아니었습니다. Headless Chrome 157에서 정리 훅에만 cleanup을 두고 iframe을 제거하자, 기록은 onMounted, pagehide, visibilitychange까지였고 onBeforeUnmount와 onUnmounted, unload는 없었습니다. 부모 창에 probe를 다시 보내도 콜백은 이미 실행되지 않았지만, 개발자 도구로 세어 보면 probe 리스너는 그대로 남아 있었습니다. 같은 여닫기를 12번 반복하면 부모 창에 리스너가 12개 남고, 힙은 0.6MB에서 102.6MB까지 올랐습니다. 같은 정리 함수를 pagehide에서도 부르면, 제거 직후 리스너는 0개였고 12번을 반복한 뒤에도 힙은 약 1MB에서 평평했습니다. 이 수치는 실험실에서 잰 값이고, 제품 체감을 대체하지는 않습니다.
+같은 상황을 일반 예시로 다시 재어 보니, 문제는 콜백이 계속 울리는 쪽이 아니었습니다. Headless Chrome 157에서 정리 훅에만 cleanup을 두고 iframe을 제거하자, 기록은 onMounted, pagehide, visibilitychange까지였고 onBeforeUnmount와 onUnmounted, unload는 없었습니다. 부모 창에 probe를 다시 보내도 콜백은 이미 실행되지 않았지만, 개발자 도구로 세어 보면 probe 리스너는 그대로 남아 있었습니다. 같은 여닫기를 12번 반복하면 부모 창에 리스너가 12개 남고, 힙은 0.6MB에서 102.6MB까지 올랐습니다. 같은 정리 함수를 pagehide에서도 부르면, 제거 직후 리스너는 0개였고 12번을 반복한 뒤에도 힙은 약 1MB에서 평평했습니다.
 
 ## 한계
 
