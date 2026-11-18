@@ -26,8 +26,10 @@ a:hover{ color:var(--link-hover); }
 .site-header{ display:flex; align-items:baseline; justify-content:space-between; gap:16px;
   padding-top:40px; padding-bottom:24px; }
 .site-title{ font-weight:700; font-size:1.05rem; color:var(--fg); text-decoration:none; letter-spacing:-.01em; }
-.site-nav a{ color:var(--muted); font-size:.875rem; text-decoration:none; margin-left:14px; }
+.site-nav{ display:flex; flex-wrap:wrap; gap:14px; justify-content:flex-end; }
+.site-nav a{ color:var(--muted); font-size:.875rem; text-decoration:none; margin-left:0; }
 .site-nav a:hover{ color:var(--fg); text-decoration:underline; }
+.site-nav a[aria-current="page"]{ color:var(--fg); font-weight:600; }
 .site-footer{ color:var(--muted); font-size:.8125rem; padding-top:48px; padding-bottom:40px; }
 .site-footer p{ border-top:1px solid var(--line); padding-top:20px; margin:0; }
 

@@ -6,6 +6,8 @@
   <header class="site-header wrap">
     <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
     <nav class="site-nav" aria-label="사이트">
+      <a href="{{ '/' | relative_url }}"{% if page.url == '/' or page.url == '/index.html' %} aria-current="page"{% endif %}>일일 회고</a>
+      <a href="{{ '/insight/' | relative_url }}"{% if page.url == '/insight/' %} aria-current="page"{% endif %}>인사이트</a>
       <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
       <a href="https://github.com/zeno0505">GitHub</a>
     </nav>
