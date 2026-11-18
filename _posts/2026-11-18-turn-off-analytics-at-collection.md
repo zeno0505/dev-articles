@@ -23,11 +23,11 @@ SDK가 기본적으로 거르는 User-Agent 목록은 Googlebot, bingbot처럼 �
 
 ```mermaid
 flowchart TD
-  페이지 열림 --> 자동화 신호인가
-  자동화 신호인가 -->|있다| 초기화 생략
-  초기화 생략 --> 대기 이벤트 비움
-  자동화 신호인가 -->|없다| SDK 초기화
-  SDK 초기화 --> 이벤트 수집
+  open[페이지 열림] --> signal[자동화 신호인가]
+  signal -->|있다| skip[초기화 생략]
+  skip --> drain[대기 이벤트 비움]
+  signal -->|없다| init[SDK 초기화]
+  init --> collect[이벤트 수집]
 ```
 
 자동화 신호는 `navigator.webdriver`가 true이거나, isbot의 `isBot(userAgent)`이 true인 경우입니다.
