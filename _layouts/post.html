@@ -1,15 +1,37 @@
 ---
 layout: default
 ---
+{% assign current_cat = page.categories | first %}
+{% if current_cat == "인사이트" %}
+  {% assign list_url = "/insight/" %}
+  {% assign list_label = "인사이트" %}
+{% else %}
+  {% assign list_url = "/" %}
+  {% assign list_label = "일일 회고" %}
+{% endif %}
+{% assign cat_posts = site.categories[current_cat] %}
+{% for p in cat_posts %}
+  {% if p.url == page.url %}
+    {% if forloop.index0 > 0 %}
+      {% assign next_index = forloop.index0 | minus: 1 %}
+      {% assign next_post = cat_posts[next_index] %}
+    {% endif %}
+    {% unless forloop.last %}
+      {% assign prev_index = forloop.index0 | plus: 1 %}
+      {% assign prev_post = cat_posts[prev_index] %}
+    {% endunless %}
+    {% break %}
+  {% endif %}
+{% endfor %}
 <article class="post">
   <header class="post-header">
-    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %-m월 %-d일" }}</time>{% if page.categories.size > 0 %} · {{ page.categories | join: ", " }}{% endif %}</p>
+    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %-m월 %-d일" }}</time>{% if current_cat %} · <a href="{{ list_url | relative_url }}">{{ current_cat }}</a>{% endif %}</p>
     <h1 class="post-title">{{ page.title }}</h1>
   </header>
   <div class="post-body">{{ content }}</div>
   <nav class="post-nav" aria-label="이전·다음 글">
-    {% if page.previous %}<a class="prev" href="{{ page.previous.url | relative_url }}"><span>이전 글</span>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
-    {% if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><span>다음 글</span>{{ page.next.title }}</a>{% endif %}
+    {% if prev_post %}<a class="prev" href="{{ prev_post.url | relative_url }}"><span>이전 글</span>{{ prev_post.title }}</a>{% else %}<span></span>{% endif %}
+    {% if next_post %}<a class="next" href="{{ next_post.url | relative_url }}"><span>다음 글</span>{{ next_post.title }}</a>{% endif %}
   </nav>
-  <p class="back"><a href="{{ '/' | relative_url }}">← 전체 글</a></p>
+  <p class="back"><a href="{{ list_url | relative_url }}">← {{ list_label }}</a></p>
 </article>
