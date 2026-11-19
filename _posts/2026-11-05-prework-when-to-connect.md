@@ -9,6 +9,8 @@ description: "업로드 창을 빨리 열려고 켠 숨은 iframe preload는, �
 
 이 글은 숨은 iframe으로 패널을 미리 불러오려 할 때, 저사양에서 첫 화면이 버벅일 수 있는지부터 가려야 하는 분께 도움이 됩니다.
 
+이 글의 iframe은 마이그레이션 과정에서 채택한 iframe 오버레이입니다. 경로 단위 부분배포로는 기능이 큰 다이얼로그를 옮길 수 없어서, 그 다이얼로그를 다시 만드는 대신 다른 앱이 가진 것을 iframe으로 빌려 쓰기로 했습니다. 채택한 배경은 [Nuxt4를 품는 모노레포에서 경로별 부분배포로 마이그레이션 이어 가기](https://zeno0505.github.io/dev-articles/2026/11/20/partial-deploy-by-path-in-nuxt4-monorepo/)에 정리했습니다.
+
 ## 한눈에 보는 결론
 
 - display:none이어도 문서와 스크립트는 불러져 실행됩니다.
