@@ -24,7 +24,7 @@ iframe을 띄웠다가 걷기를 반복할수록 부모 창의 메모리가 내�
 
 ![구독은 부모 창에, 정리 훅은 iframe 문서에 걸린다](/dev-articles/assets/2026-11-10-close-with-record-02.png)
 
-정리 훅만 두면, 부모 쪽이 요소만 제거할 때 호출되지 않습니다. pagehide만 두면, iframe은 남겨 둔 채 Vue만 언마운트할 때 이벤트가 오지 않아 리스너가 남고 probe에도 계속 응답했습니다. unload는 이 Chrome에서 iframe 제거 때 이벤트 자체가 없었고, 공식 문서도 쓰지 말라고 합니다. visibilitychange는 제거 순간에도 hidden으로 오지만, 탭만 옮겨도 같은 이벤트가 오므로 정리 시점으로 쓰면 탭만 옮겨도 구독이 풀려 쓰지 않았습니다.
+정리 훅만 두면, 부모 쪽이 요소만 제거할 때 호출되지 않습니다. pagehide만 두면, iframe은 남겨 둔 채 Vue만 언마운트할 때 이벤트가 오지 않아 리스너가 남고 probe에도 계속 응답했습니다. unload는 이 Chrome에서 iframe 제거 때 이벤트 자체가 없었고, 공식 문서도 쓰지 말라고 합니다. visibilitychange는 iframe을 제거할 때 pagehide 바로 뒤에 hidden으로 왔습니다. 하지만 탭만 옮겨도 같은 hidden이 왔고, 거기서 구독을 끊자 탭으로 돌아와도 관측이 다시 이어지지 않았습니다. 정리하지 않은 관측기는 같은 탭 이동을 거친 뒤에도 계속 기록을 받았으므로, 끊긴 원인은 브라우저가 아니라 hidden에서 건 정리였습니다.
 
 ![정리를 거는 자리별로 부모 창 구독이 풀리는지 비교한 표](/dev-articles/assets/2026-11-10-close-with-record-03.png)
 
