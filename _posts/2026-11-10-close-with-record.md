@@ -22,7 +22,11 @@ iframe을 띄웠다가 걷기를 반복할수록 부모 창의 메모리가 내�
 
 ## 제약에 맞춰 고른 방법
 
-정리 훅만 두면, 부모 쪽이 요소만 제거할 때 호출되지 않습니다. pagehide만 두면, iframe은 남겨 둔 채 Vue만 언마운트할 때 이벤트가 오지 않아 리스너가 남고 probe에도 계속 응답했습니다. unload는 이 Chrome에서 iframe 제거 때 이벤트 자체가 없었고, 공식 문서도 쓰지 말라고 합니다. visibilitychange는 제거 순간에도 hidden으로 오지만, 탭만 옮겨도 같은 이벤트가 와 구독이 풀리고 다시 돌아와도 복구되지 않았습니다.
+![구독은 부모 창에, 정리 훅은 iframe 문서에 걸린다](/dev-articles/assets/2026-11-10-close-with-record-02.png)
+
+정리 훅만 두면, 부모 쪽이 요소만 제거할 때 호출되지 않습니다. pagehide만 두면, iframe은 남겨 둔 채 Vue만 언마운트할 때 이벤트가 오지 않아 리스너가 남고 probe에도 계속 응답했습니다. unload는 이 Chrome에서 iframe 제거 때 이벤트 자체가 없었고, 공식 문서도 쓰지 말라고 합니다. visibilitychange는 제거 순간에도 hidden으로 오지만, 탭만 옮겨도 같은 이벤트가 오므로 정리 시점으로 쓰면 탭만 옮겨도 구독이 풀려 쓰지 않았습니다.
+
+![정리를 거는 자리별로 부모 창 구독이 풀리는지 비교한 표](/dev-articles/assets/2026-11-10-close-with-record-03.png)
 
 그래서 cleanup은 한 번만 실행되게 가드를 두고, onUnmounted와 pagehide에 같이 걸었습니다. 부모 문서가 제거 전에 unmount를 반드시 부르게 하는 방법은, 부모를 우리가 통제할 때는 확실합니다. 다만 부모 쪽이 요소만 빼는 경우가 있어, 정리의 주된 위치는 iframe 문서의 수명에 두기로 했습니다.
 
