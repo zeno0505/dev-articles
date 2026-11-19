@@ -1,5 +1,5 @@
 ---
-title: "숨은 iframe preload는 기기 조건을 보고 켠다"
+title: "숨은 iframe preload를 기기 조건을 보고 켜기"
 date: 2026-11-05
 categories: [일일 회고]
 description: "업로드 창을 빨리 열려고 켠 숨은 iframe preload는, 저사양에서 첫 화면을 무겁게 만들 수 있어 기기 조건을 보고 켜기로 했습니다."
