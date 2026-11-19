@@ -1,5 +1,5 @@
 ---
-title: "부모 창에 건 리스너는 pagehide에서 푼다"
+title: "부모 창에 건 리스너를 pagehide에서 풀기"
 date: 2026-11-10
 categories: [일일 회고]
 description: "iframe을 걷을 때 Vue 정리 훅은 안 돌고 부모 창 리스너는 남아, pagehide에서도 같은 정리를 걸었습니다."
