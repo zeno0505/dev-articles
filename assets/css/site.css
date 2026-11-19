@@ -111,3 +111,21 @@ pre{ background:var(--code-bg); color:var(--code-fg); border:1px solid var(--lin
 .post-body pre.mermaid svg{ max-width:100%; height:auto; }
 .post-body pre.mermaid .nodeLabel,
 .post-body pre.mermaid foreignObject{ word-break:keep-all; overflow-wrap:anywhere; }
+
+/* ---------- 표 (마크다운 table) ----------
+   본문 기본값(overflow-wrap:anywhere)이 숫자를 중간에서 끊으므로 표 안에서는 풀고,
+   칸 안 줄바꿈도 막는다. 폭이 모자라면 표 자체가 가로로 스크롤된다. 라이트/다크는 기존 토큰을 따른다. */
+.post-body table{
+  display:block; width:max-content; max-width:100%; overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-collapse:collapse; border-spacing:0;
+  font-size:.875rem; line-height:1.6; font-variant-numeric:tabular-nums;
+}
+.post-body th,.post-body td{
+  padding:.5em .6em; border:1px solid var(--line); text-align:left; vertical-align:top;
+  white-space:nowrap; word-break:normal; overflow-wrap:normal;
+}
+.post-body thead th{ background:var(--soft); font-weight:600; border-bottom:2px solid var(--line); }
+.post-body tbody tr:nth-child(even){ background:var(--soft); }
+.post-body tbody th{ font-weight:600; }
+.post-body td code,.post-body th code{ white-space:nowrap; overflow-wrap:normal; word-break:normal; padding:.08em .3em; }
