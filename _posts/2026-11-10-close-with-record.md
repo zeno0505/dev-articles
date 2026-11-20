@@ -65,7 +65,7 @@ export function useParentSubscription(connect) {
 
 `connect`는 부모 창에 addEventListener나 MutationObserver를 걸고, 푸는 함수를 돌려 주면 됩니다.
 
-## 프레임을 걷을 때 본 것
+## iframe 제거 시 부모 창 리스너가 남는 현상
 
 ### 처음 판단: 정리 훅이 구독을 풀어 줄 것
 
