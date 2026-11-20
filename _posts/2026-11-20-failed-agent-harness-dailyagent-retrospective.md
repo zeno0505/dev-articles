@@ -9,7 +9,7 @@ description: "노션 태스크를 변경 요청까지 잇던 dailyagent는 끝�
 |---|---|
 | 1 | [Nuxt4를 품는 모노레포에서 경로별 부분배포로 마이그레이션 이어 가기](/dev-articles/2026/11/20/partial-deploy-by-path-in-nuxt4-monorepo/) |
 | 2 | 실패한 에이전트 하네스, dailyagent 돌아보기 (이 글) |
-| 3 | QA 부하를 줄이기 위한 테스트 플랫폼 제작기 (예정) |
+| 3 | [QA 부하를 줄이기 위한 테스트 플랫폼 제작기](/dev-articles/2026/11/20/test-platform-to-reduce-qa-load/) |
 | 4 | 팀 내에서도 인지하지 못하는 태스크 처리하기 (예정) |
 | 5 | 마이그레이션 자동화 팀 꾸리기 (예정) |
 
