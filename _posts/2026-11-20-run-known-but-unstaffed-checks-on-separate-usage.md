@@ -11,7 +11,7 @@ description: "오류 모니터링, 접근성, 검색 최적화처럼 필요한 �
 | 2 | [실패한 에이전트 하네스, dailyagent 돌아보기](/dev-articles/2026/11/20/failed-agent-harness-dailyagent-retrospective/) |
 | 3 | [QA 부하를 줄이기 위한 테스트 플랫폼 제작기](/dev-articles/2026/11/20/test-platform-to-reduce-qa-load/) |
 | 4 | 알지만 여력이 없던 일을 별도 사용량으로 돌리기 (이 글) |
-| 5 | 마이그레이션 자동화 팀 꾸리기 (예정) |
+| 5 | [비용 부채를 줄이며 기능 개발을 이어 가는 마이그레이션 자동화 팀 꾸리기](/dev-articles/2026/11/21/migration-automation-team-while-paying-down-cost-debt/) |
 
 아침에 헬스장으로 이동하는 중이나 출퇴근 중에 폰을 열어 에이전트 보고를 확인합니다. 보고는 제가 움직이기 전에 이미 올라와 있고, 저는 이동하는 동안 사람이 봐야 할 것만 골라 둡니다. 이 장면은 보고가 틀릴 수 있다는 전제에서 시작해야 성립한다고 저는 봅니다. 틀린 보고를 맞는 보고처럼 읽게 되면, 폰으로 보는 시간이 오히려 잘못된 확신을 쌓는 시간이 되기 때문입니다.
 
