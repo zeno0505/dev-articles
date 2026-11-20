@@ -10,7 +10,7 @@ description: "에이전트 덕에 개발이 쉬워진 만큼 버그도 늘었고
 | 1 | [Nuxt4를 품는 모노레포에서 경로별 부분배포로 마이그레이션 이어 가기](/dev-articles/2026/11/20/partial-deploy-by-path-in-nuxt4-monorepo/) |
 | 2 | [실패한 에이전트 하네스, dailyagent 돌아보기](/dev-articles/2026/11/20/failed-agent-harness-dailyagent-retrospective/) |
 | 3 | QA 부하를 줄이기 위한 테스트 플랫폼 제작기 (이 글) |
-| 4 | 팀 내에서도 인지하지 못하는 태스크 처리하기 (예정) |
+| 4 | [알지만 여력이 없던 일을 별도 사용량으로 돌리기](/dev-articles/2026/11/20/run-known-but-unstaffed-checks-on-separate-usage/) |
 | 5 | 마이그레이션 자동화 팀 꾸리기 (예정) |
 
 에이전트 덕분에 개발은 쉬워졌는데, 버그도 그만큼 늘었습니다. 버그가 늘면 QA가 봐야 할 것도 늘어납니다. 그 부담을 줄이려고 테스트 도구를 만들었고, 기능보다 먼저 「통과」를 믿을 수 있게 만드는 데 시간을 썼습니다.
