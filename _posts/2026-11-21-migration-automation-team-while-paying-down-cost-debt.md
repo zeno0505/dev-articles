@@ -11,7 +11,7 @@ description: "경로별 부분배포로 마이그레이션하는 동안에는 �
 | 2 | [실패한 에이전트 하네스, dailyagent 돌아보기](/dev-articles/2026/11/20/failed-agent-harness-dailyagent-retrospective/) |
 | 3 | [QA 부하를 줄이기 위한 테스트 플랫폼 제작기](/dev-articles/2026/11/20/test-platform-to-reduce-qa-load/) |
 | 4 | [알지만 여력이 없던 일을 별도 사용량으로 돌리기](/dev-articles/2026/11/20/run-known-but-unstaffed-checks-on-separate-usage/) |
-| 5 | 마이그레이션 자동화 팀 꾸리기 (이 글) |
+| 5 | 비용 부채를 줄이며 기능 개발을 이어 가는 마이그레이션 자동화 팀 꾸리기 (이 글) |
 
 이전에 Nuxt4와 Nuxt2를 동시에 띄우는 [경로별 부분배포](/dev-articles/2026/11/20/partial-deploy-by-path-in-nuxt4-monorepo/) 구조를 만들었습니다. 경로별로 마이그레이션된 코드를 배포할 수 있게 되면서, 기능 개발을 이어 가는 동시에 마이그레이션할 코드 자체는 줄여 나갈 수 있게 되었습니다. 대신 한 컨테이너 안에 Nuxt 프로세스를 2개 띄우는 구조가 되어 트래픽에 취약하고, 서버 비용도 더 나오는 문제가 생겼습니다. 그래서 최대한 빠르게 마이그레이션을 끝내는 것이 프론트엔드 팀의 과제가 되었고, 마이그레이션 자동화 팀은 이 과제를 기능 개발과 함께 풀려고 만들었습니다.
 
