@@ -11,7 +11,7 @@ description: "노션 태스크를 변경 요청까지 잇던 dailyagent는 끝�
 | 2 | 실패한 에이전트 하네스, dailyagent 돌아보기 (이 글) |
 | 3 | [QA 부하를 줄이기 위한 테스트 플랫폼 제작기](/dev-articles/2026/11/20/test-platform-to-reduce-qa-load/) |
 | 4 | [알지만 여력이 없던 일을 별도 사용량으로 돌리기](/dev-articles/2026/11/20/run-known-but-unstaffed-checks-on-separate-usage/) |
-| 5 | 마이그레이션 자동화 팀 꾸리기 (예정) |
+| 5 | [비용 부채를 줄이며 기능 개발을 이어 가는 마이그레이션 자동화 팀 꾸리기](/dev-articles/2026/11/21/migration-automation-team-while-paying-down-cost-debt/) |
 
 dailyagent는 기능으로는 끝까지 돌아갔고, 에이전트가 만든 변경 요청도 병합까지 이어졌습니다. 그런데도 지금은 쓰지 않습니다. 쓰지 않게 된 이유는 인지 부하였고, 그 이야기는 [사람이 프록시가 아니라 오케스트레이터가 되기](/dev-articles/2026/11/18/be-an-orchestrator-not-a-proxy/)에 정리해 두었습니다. 그래서 이 글은 같은 이유를 다시 풀지 않고, [dailyagent](https://github.com/zeno0505/dailyagent)를 만들고 돌리며 남긴 설계와 동료에게 맡겨 본 경험, 그리고 그 뒤에 얻은 교훈을 회고로 적습니다.
 

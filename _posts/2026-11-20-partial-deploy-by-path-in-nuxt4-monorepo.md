@@ -11,7 +11,7 @@ description: "마이그레이션이 기능 개발 속도를 따라가지 못해,
 | 2 | [실패한 에이전트 하네스, dailyagent 돌아보기](/dev-articles/2026/11/20/failed-agent-harness-dailyagent-retrospective/) |
 | 3 | [QA 부하를 줄이기 위한 테스트 플랫폼 제작기](/dev-articles/2026/11/20/test-platform-to-reduce-qa-load/) |
 | 4 | [알지만 여력이 없던 일을 별도 사용량으로 돌리기](/dev-articles/2026/11/20/run-known-but-unstaffed-checks-on-separate-usage/) |
-| 5 | 마이그레이션 자동화 팀 꾸리기 (예정) |
+| 5 | [비용 부채를 줄이며 기능 개발을 이어 가는 마이그레이션 자동화 팀 꾸리기](/dev-articles/2026/11/21/migration-automation-team-while-paying-down-cost-debt/) |
 
 주간회의에서 기능 개발에 적극적인 팀원이 마이그레이션 속도가 기능 개발 속도를 따라가지 못한다고 짚었습니다. 맞는 말이었습니다. 신규 기능은 Nuxt2에 계속 쌓이는데, Nuxt4는 별도 브랜치에서 일부 인원이 옮기는 구조였기 때문입니다. 그래서 저는 Nuxt4를 다 옮긴 뒤 한 번에 내보내는 대신, 옮겨진 경로부터 운영에 내보내는 구조를 제안했습니다. 그 결과가 Nuxt4를 품는 모노레포와 경로별 부분배포입니다. 이 글은 그 구조의 동작 원리와, 경로 단위로 나누면 풀리지 않는 다이얼로그를 iframe으로 빌려 쓰며 치른 비용을 정리합니다.
 
