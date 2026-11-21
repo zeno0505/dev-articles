@@ -7,7 +7,7 @@ description: "iframe을 걷을 때 Vue 정리 훅은 안 돌고 부모 창 리�
 
 iframe을 띄웠다가 걷기를 반복할수록 부모 창의 메모리가 내려가지 않았습니다. 성능을 보려고 iframe 안의 앱이 부모 창에 긴 작업 관측기를 걸었고, 프레임을 걷으면 Vue의 onUnmounted가 그 구독을 풀어 줄 거라고 가정했습니다. 부모 창에 건 관측기가 끊기지 않아 iframe 앱이 통째로 남는 쪽이었습니다. 그래서 정리 훅만 믿지 않고, 문서가 숨는 pagehide에서도 같은 정리를 걸고 다시 테스트했습니다. 그때는 몇 번을 반복해도 메모리에 변화가 없었습니다.
 
-이 글에서는 iframe 안의 앱이 부모 창에 건 리스너와 관측기를, 프레임을 걷을 때 pagehide에서 푸는 방법을 다룹니다.
+이 글에서는 iframe 안의 앱이 부모 창에 건 **리스너**{: .key}와 관측기를, 프레임을 걷을 때 pagehide에서 푸는 방법을 다룹니다.
 
 이 글의 iframe은 마이그레이션 과정에서 채택한 iframe 오버레이입니다. 경로 단위 부분배포로는 기능이 큰 다이얼로그를 옮길 수 없어서, 다른 앱의 다이얼로그를 iframe으로 빌려 썼습니다. 반대 방향도 있습니다. Nuxt4로 옮긴 다이얼로그를 레거시 화면에서도 그대로 쓰게 하면, 구현을 하나만 유지할 수 있습니다. 채택한 배경은 [Nuxt4를 품는 모노레포에서 경로별 부분배포로 마이그레이션 이어 가기](https://zeno0505.github.io/dev-articles/2026/11/20/partial-deploy-by-path-in-nuxt4-monorepo/)에 정리했습니다.
 
@@ -30,7 +30,7 @@ iframe을 띄웠다가 걷기를 반복할수록 부모 창의 메모리가 내�
 
 ![정리를 거는 자리별로 부모 창 구독이 풀리는지 비교한 표](/dev-articles/assets/2026-11-10-close-with-record-03.png)
 
-그래서 cleanup은 한 번만 실행되게 가드를 두고, onUnmounted와 pagehide에 같이 걸었습니다. 부모 문서가 제거 전에 unmount를 반드시 부르게 하는 방법은, 부모를 우리가 통제할 때는 확실합니다. 다만 부모 쪽이 요소만 빼는 경우가 있어, 정리의 주된 위치는 iframe 문서의 수명에 두기로 했습니다.
+그래서 **cleanup은 한 번만 실행되게 가드를 두고, onUnmounted와 pagehide에 같이 걸었습니다**. 부모 문서가 제거 전에 unmount를 반드시 부르게 하는 방법은, 부모를 우리가 통제할 때는 확실합니다. 다만 부모 쪽이 요소만 빼는 경우가 있어, 정리의 주된 위치는 iframe 문서의 수명에 두기로 했습니다.
 
 ## 기본 구조
 
@@ -77,7 +77,7 @@ export function useParentSubscription(connect) {
 
 ### 울리지 않는 콜백과 남아 있는 리스너
 
-같은 상황을 일반 예시로 다시 재어 보니, 문제는 콜백이 계속 울리는 쪽이 아니었습니다. Headless Chrome 157에서 정리 훅에만 cleanup을 두고 iframe을 제거하자, 기록은 onMounted, pagehide, visibilitychange까지였고 onBeforeUnmount와 onUnmounted, unload는 없었습니다. 부모 창에 probe를 다시 보내도 콜백은 이미 실행되지 않았지만, 개발자 도구로 세어 보면 probe 리스너는 그대로 남아 있었습니다. iframe을 붙였다 떼는 과정을 12번 반복하면 부모 창에 리스너가 12개 남고, 힙은 0.6MB에서 102.6MB까지 올랐습니다. 같은 정리 함수를 **pagehide에서도 부르면, 제거 직후 리스너는 0개였고**{: .key} 12번을 반복한 뒤에도 힙은 약 1MB에서 변화가 없었습니다.
+같은 상황을 일반 예시로 다시 재어 보니, 문제는 콜백이 계속 울리는 쪽이 아니었습니다. Headless Chrome 157에서 정리 훅에만 cleanup을 두고 iframe을 제거하자, 기록은 onMounted, pagehide, visibilitychange까지였고 onBeforeUnmount와 onUnmounted, unload는 없었습니다. 부모 창에 probe를 다시 보내도 콜백은 이미 실행되지 않았지만, 개발자 도구로 세어 보면 probe 리스너는 그대로 남아 있었습니다. iframe을 붙였다 떼는 과정을 12번 반복하면 부모 창에 리스너가 12개 남고, 힙은 0.6MB에서 102.6MB까지 올랐습니다. 같은 정리 함수를 pagehide에서도 부르면, 제거 직후 리스너는 0개였고 12번을 반복한 뒤에도 힙은 약 1MB에서 변화가 없었습니다.
 
 ## 한계
 
