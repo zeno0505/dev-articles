@@ -34,7 +34,7 @@ flowchart TD
   A["경로별 부분배포의 필요성"] --> B["경로 분기 모듈 제작"]
   B --> C["큰 기능을 가진 다이얼로그는<br/>경로 단위로 옮길 수 없음"]
   C --> D["iframe 오버레이 제안"]
-  D --> E["옮긴 다이얼로그를<br/>구 화면에서도 써야 함"]
+  D --> E["옮긴 다이얼로그를<br/>레거시 화면에서도 써야 함"]
   E --> F["반대 방향 iframe 오버레이"]
 ```
 
@@ -120,8 +120,8 @@ export type Target = "new" | "old" | "old-admin";
 
 const isNewAppPath = createPathMatcher([
   "/feature-a{/*path}",
-  "!/feature-a/not-ready-yet{/*path}", // 코드는 병합됐지만 아직 구 앱이 받습니다
-  "/overlay/upload-panel",             // 구 앱이 오버레이로 빌려 쓰는 새 앱 화면
+  "!/feature-a/not-ready-yet{/*path}", // 코드는 병합됐지만 아직 레거시 앱이 받습니다
+  "/overlay/upload-panel",             // 레거시 앱이 오버레이로 빌려 쓰는 새 앱 화면
   "/api{/*path}",
 ]);
 const isOldAdminPath = createPathMatcher(["/admin{/*path}"]);
@@ -129,7 +129,7 @@ const isOldAdminPath = createPathMatcher(["/admin{/*path}"]);
 export function getTarget(path: string): Target {
   if (isNewAppPath(path)) return "new";
   if (isOldAdminPath(path)) return "old-admin";
-  return "old"; // 목록에 없으면 전부 구 앱
+  return "old"; // 목록에 없으면 전부 레거시 앱
 }
 
 function createPathMatcher(patterns: string[]) {
