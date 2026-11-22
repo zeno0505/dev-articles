@@ -27,7 +27,7 @@ description: "정확성 때문에 버린 분리 문서 직렬화를 다시 넣�
 
 ## 기본 구조
 
-Tiptap의 getHTML은 편집 중인 문서를 HTML로 돌려 줍니다. 그 아래의 ProseMirror DOMSerializer.serializeFragment는 document 옵션을 받을 수 있고, 공식 문서는 브라우저가 아닐 때 노드를 만들 문서를 넘기라고 적습니다. createHTMLDocument가 만드는 문서는 지금 페이지와 분리되어 있고, 기준 주소는 about:blank입니다.
+[Tiptap의 getHTML](https://tiptap.dev/docs/editor/api/editor)은 편집 중인 문서를 HTML로 돌려 줍니다. 그 아래의 ProseMirror DOMSerializer.serializeFragment는 document 옵션을 받을 수 있고, [ProseMirror 문서](https://prosemirror.net/docs/ref/#model.DOMSerializer.serializeFragment)는 브라우저가 아닐 때 노드를 만들 문서를 넘기라고 적습니다. createHTMLDocument가 만드는 문서는 [MDN 예시](https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument)에서 보듯 지금 페이지와 분리되어 있고, 기준 주소는 [DOM 명세](https://dom.spec.whatwg.org/#concept-document-url)의 기본값인 about:blank입니다.
 
 ![저장 HTML은 읽기 방법에 따라 갈릴 수 있다](/dev-articles/assets/2026-11-13-remeasure-discarded-optimization-01.png)
 
@@ -48,7 +48,7 @@ function serializeForSave(source) {
 
 ### 예전에 이 방법을 사용하지 않았던 이유
 
-처음 에디터를 만들 때는, 분리된 문서에서 읽으면 저장 문자열이 달라질 수 있다고 보고 이 방식을 버렸습니다. 정확성을 지키려는 선택이었습니다.
+처음 에디터를 만들 때는, 분리된 문서에서 읽으면 저장 문자열이 달라질 수 있다고 생각해 이 방식을 버렸습니다. 정확성을 지키려는 선택이었습니다.
 
 ### 다시 넣은 뒤 가벼워진 입력
 
