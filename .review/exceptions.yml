@@ -2,4 +2,4 @@
 # 글 파일 이름(확장자 제외)별로 {rule, target, reason}을 둔다. 줄 번호 대신 규칙+문구로 맞춘다.
 # reason은 공개 저장소에 보이므로 중립 문구로 쓴다.
 2026-11-20-test-platform-to-reduce-qa-load:
-  - {rule: B2, target: "믿을 수 있게", reason: "주제어"}
+  - {rule: B5, target: "믿을 수 있게", reason: "주제어"}
