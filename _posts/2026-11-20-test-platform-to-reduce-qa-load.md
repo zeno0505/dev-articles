@@ -23,37 +23,59 @@ description: "에이전트 덕에 개발이 쉬워진 만큼 버그도 늘었고
 
 이 방식은 에이전트가 내리는 판정이 맞을 때만 성립합니다. 에이전트가 서비스를 쓰고 「통과」라고 보고했는데 그 통과가 틀렸다면, 에이전트는 틀린 작업을 맞다고 말하게 되고 사람은 그 보고를 다시 확인해야 합니다. 그래서 저는 기능을 넓히기 전에 판정을 믿을 수 있게 만드는 일을 먼저 했습니다.
 
-판정이 틀리는 모습은 이랬습니다. 삭제한 댓글이 화면에서 분명히 사라졌는데도, 「이 댓글이 보이지 않는다」는 판정은 계속 실패했습니다. 화면을 열어 보면 목록은 한 줄 줄어 있었습니다. 더 곤란한 쪽은 반대 판정이었습니다. 같은 원인으로 「이 댓글이 보인다」는 판정이 화면에 없는 댓글에도 통과하고 있었습니다.
+판정이 틀리는 모습은 이랬습니다. 삭제한 댓글이 화면에서 분명히 사라졌는데도, 「이 댓글이 보이지 않는다」는 판정은 계속 실패했습니다. 화면을 열어 보면 목록은 한 줄 줄어 있었습니다.
 
-## SSR 페이로드(`__NUXT_DATA__`)를 읽은 텍스트 판정
+## agent-browser 도입 계기
 
-Nuxt는 서버에서 렌더할 때 `useFetch`나 `useAsyncData`로 받은 데이터를 페이로드로 직렬화해 HTML 안의 `<script id="__NUXT_DATA__">`에 싣습니다. 클라이언트는 그 데이터를 다시 요청하는 대신 재사용합니다. 실측해 보니 제 글자 판정이 집은 요소는 목록의 항목이 아니라 이 스크립트 요소였습니다. 목록 응답이 거기에 그대로 실려 있으니, 화면에서 항목을 지워도 문서 안에는 글자가 남습니다.
+우연히 Vercel이 에이전트를 위한 브라우저인 agent-browser를 만들었다는 소식을 들었습니다. agent-browser는 CLI로 동작합니다. 그래서 명령을 이어 붙여 터미널에서 도는 스크립트로 만들면 Playwright의 테스트 코드와 같은 방식으로 돌릴 수 있습니다. 그러면서도 에이전트가 검증하는 과정에서 본 결과를, 스크립트가 도는 결과와 똑같이 보장할 수 있다는 점이 매력적이었습니다. **에이전트가 직접 본 화면과 스크립트가 판정한 화면이 같다**는 점을 보고 적용했습니다.
 
-차이는 DOM 프로퍼티 하나로 재현됩니다. MDN에 따르면 `textContent`는 `script`와 `style`을 포함한 모든 요소의 내용을 가져오고, `innerText`는 사람이 읽는 요소만 보여 주며 숨겨진 요소의 글자는 돌려주지 않습니다. 아래 페이지에서 항목을 지운 뒤 두 값을 비교해 보면 됩니다.
+적용한 뒤 Nuxt2에서 Nuxt4로 화면을 옮기는 과정에서, 같은 테스트 코드가 실패하는 것을 발견했습니다. 댓글을 지운 뒤 「이 댓글이 보이지 않는다」를 확인하는 판정이었고, 화면에서는 이미 지워진 상태였습니다.
 
-```html
-<ul id="comments">
-  <li>첫 번째 댓글</li>
-  <li id="target">지울 댓글</li>
-</ul>
-<script id="__NUXT_DATA__" type="application/json">["첫 번째 댓글","지울 댓글"]</script>
+## `snapshot`과 `find text`의 동작 차이
+
+원인을 따라가 보니, Nuxt는 서버에서 렌더할 때 `useFetch`나 `useAsyncData`로 받은 데이터를 페이로드로 직렬화해 HTML 안의 `<script id="__NUXT_DATA__">`에 싣습니다. 클라이언트는 그 데이터를 다시 요청하는 대신 재사용합니다. 목록 응답이 거기에 그대로 실려 있으니, 화면에서 항목을 지워도 문서 안에는 글자가 남습니다. 판정이 집은 요소는 목록의 항목이 아니라 이 스크립트 요소였습니다.
+
+왜 그 요소가 집혔는지는 agent-browser의 [공개 저장소](https://github.com/vercel-labs/agent-browser)를 열어 작동 방식을 뜯어보고 알았습니다. 같은 글자를 찾는 명령인데 `snapshot`과 `find text`는 서로 다른 것을 읽었습니다.
+
+- `snapshot`은 CDP의 `Accessibility.getFullAXTree`로 접근성 트리를 만들어 텍스트로 돌려줍니다. 화면에 나오는 요소만 들어가고 스크립트의 글자는 들어가지 않습니다.
+- `find text`는 문서의 모든 요소를 훑어 자식 요소가 없는 요소 가운데 `textContent`에 글자가 들어 있는 것을 집습니다. `textContent`는 MDN에 따르면 `script`와 `style`을 포함한 모든 요소의 내용을 가져옵니다. 자식이 없는 `<script>`가 그대로 걸립니다.
+- `wait --text`는 `document.body.innerText`에서 글자를 찾습니다. `innerText`는 사람이 읽는 요소만 보여 주고 숨겨진 요소의 글자는 돌려주지 않습니다.
+
+```mermaid
+flowchart TB
+  page["항목을 지운 페이지<br/>script에 글자가 남음"]
+  page --> snapshotCmd["snapshot"]
+  page --> findCmd["find text"]
+  page --> waitCmd["wait --text"]
+  snapshotCmd --> axTree["접근성 트리 생성"]
+  axTree --> snapshotResult["글자 없음"]
+  findCmd --> leafScan["자식 없는 요소를<br/>모두 순회"]
+  leafScan --> textContentCheck["textContent에<br/>글자 포함 여부"]
+  textContentCheck --> scriptHit["script 요소가 걸림"]
+  scriptHit --> findResult["글자 있음<br/>종료코드 0"]
+  waitCmd --> innerTextCheck["body.innerText에<br/>글자 포함 여부"]
+  innerTextCheck --> waitResult["글자 없음<br/>시간 초과"]
 ```
 
-```js
-const has = () => ({
-  textContent: document.body.textContent.includes('지울 댓글'),
-  innerText: document.body.innerText.includes('지울 댓글'),
-});
-console.log(has());                       // { textContent: true,  innerText: true }
-document.getElementById('target').remove();
-console.log(has());                       // { textContent: true,  innerText: false }
+같은 페이지에서 직접 돌려 보면 차이가 그대로 나옵니다. `<li>지울 댓글</li>` 옆에 `<script id="__NUXT_DATA__" type="application/json">["지울 댓글"]</script>`가 있는 페이지에서 `li`를 지운 뒤의 결과입니다.
+
+```bash
+$ agent-browser snapshot
+- heading "제목" [level=1, ref=e1]
+- list
+
+$ agent-browser find text "지울 댓글" text
+["지울 댓글"]                    # 종료코드 0: 글자를 찾았다는 뜻
+
+$ agent-browser wait --text "지울 댓글" --timeout 2000
+✗ Wait timed out after 2000ms   # 종료코드 1: 화면에 없다는 뜻
 ```
 
-항목을 지운 뒤에도 `textContent`는 여전히 `true`입니다. 문서 전체에서 글자를 찾는 판정이라면 「보이지 않는다」는 영원히 참이 되지 않고, 「보인다」는 화면에 없는 글자에도 통과합니다. 실제로 같은 TC 안에서 「보인다」가 통과시킨 답글을, 바로 뒤의 순서 판정이 화면에 없다고 보고하면서 이 결함이 드러났습니다.
+「보이지 않는다」를 `find text`가 실패하는지로 판정하면, 항목을 지워도 스크립트의 글자가 찾아져서 판정은 영원히 실패합니다. Nuxt4 화면에서 같은 테스트 코드가 실패한 것은 이 때문이었습니다.
 
-그래서 **글자 판정은 접근성 스냅샷에서 읽도록 바꿨습니다**. agent-browser의 `snapshot`은 페이지를 접근성 트리 텍스트로 돌려줍니다. 판정이 문서 전체가 아니라 이 트리를 읽게 한 것입니다.
+그래서 **글자 판정은 접근성 스냅샷 기준으로 바꿨습니다**. 판정이 문서 전체의 `textContent`가 아니라 접근성 트리를 읽게 한 것입니다.
 
-1편에서 경로를 하나씩 Nuxt4로 넘기는 구조를 만들었는데, 이 결함은 그 구조 위에서 화면이 Nuxt4로 넘어간 뒤 판정이 실패하면서 처음 드러났습니다.
+1편에서 경로를 하나씩 Nuxt4로 넘기는 구조를 만들었는데, 이 실패는 그 구조 위에서 화면이 Nuxt4로 넘어간 뒤 처음 드러났습니다.
 
 ## 노션 TC에서 YAML TC로 바뀐 과정
 
@@ -153,7 +175,7 @@ TC의 정본은 YAML 하나입니다. 노션은 QA가 읽고 쓰기 편하지만
 
 | 원인 | 보인 증상 | 고친 방법 |
 |---|---|---|
-| 글자 판정이 스크립트 요소까지 읽음 | 지운 항목이 계속 보이고, 없는 항목이 통과 | 접근성 스냅샷에서 읽기 |
+| 글자 판정이 스크립트 요소까지 읽음 | 지운 항목이 계속 남아 있는 것으로 판정되어 실패 | 접근성 스냅샷에서 읽기 |
 | 접두 일치 | 「고정」 판정이 「고정 취소」에도 통과 | 정확 일치와 정적 감사 |
 | 도구 장애를 화면 판정 실패로 보고 | 글자가 없다는 보고가 실제로는 도구의 멈춤 | 「차단」 판정을 따로 두고 도구 상태부터 확인 |
 | 아무것도 연결하지 않은 TC | 검증한 것이 없는데 「부분 통과」로 표시 | 「미구현」 판정을 따로 둠 |
@@ -220,7 +242,7 @@ flowchart TD
 
 ## 브라우저 드라이버로 agent-browser를 고른 이유
 
-agent-browser를 고른 이유는 문제가 났을 때의 모습에 있었습니다. Playwright도 에이전트가 쓸 수 있었지만, 기본 테스트 러너는 테스트가 실패하면 브라우저를 닫습니다. 남는 것은 실패 시점의 정적 스냅샷뿐이라, 에이전트가 그 브라우저에 다시 붙어 상태를 살펴볼 수는 없습니다. agent-browser는 브라우저가 테스트 실행과 따로 살아 있어서, 문제가 나도 에이전트가 오류가 난 상태의 세션을 그 자리에서 잡을 수 있었습니다. 그 상태를 코드와 대조하면 제품 문제인지, 데이터 문제인지, 러너 문제인지를 가리기가 쉬웠습니다.
+처음 agent-browser를 쓴 이유는 앞에서 적은 대로 CLI라는 점이었고, 계속 쓴 이유는 문제가 났을 때의 모습에 있었습니다. Playwright도 에이전트가 쓸 수 있었지만, 기본 테스트 러너는 테스트가 실패하면 브라우저를 닫습니다. 남는 것은 실패 시점의 정적 스냅샷뿐이라, 에이전트가 그 브라우저에 다시 붙어 상태를 살펴볼 수는 없습니다. agent-browser는 브라우저가 테스트 실행과 따로 살아 있어서, 문제가 나도 에이전트가 오류가 난 상태의 세션을 그 자리에서 잡을 수 있었습니다. 그 상태를 코드와 대조하면 제품 문제인지, 데이터 문제인지, 러너 문제인지를 가리기가 쉬웠습니다.
 
 접근성 이름이 없는 버튼은 이름으로 찾는 로케이터로는 어떤 드라이버를 쓰더라도 찾을 수 없습니다. 그래서 드라이버를 바꾸기 전에 제품 쪽에 이름을 붙이는 일을 먼저 했습니다. agent-browser를 유지하면서, 마우스를 올려야만 닿는 자리가 몇 곳을 넘으면 다시 따지기로 조건을 문서에 적어 두었습니다.
 
@@ -259,6 +281,7 @@ QA 부하를 줄이는 일은 QA의 도구를 바꾸는 일이 아니라, 이슈
 
 - [Node: textContent property, MDN](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
 - [HTMLElement: innerText property, MDN](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText)
+- [agent-browser 공개 저장소, Vercel](https://github.com/vercel-labs/agent-browser)
 - [Data Fetching, Nuxt 문서](https://nuxt.com/docs/4.x/getting-started/data-fetching)
 - [useAsyncData, Nuxt 문서](https://nuxt.com/docs/4.x/api/composables/use-async-data)
 - [agent-browser README](https://github.com/vercel-labs/agent-browser)
