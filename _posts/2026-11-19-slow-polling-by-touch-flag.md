@@ -23,7 +23,7 @@ description: "에이전틱 브라우저를 여러 개 띄워 둔 채 주기적�
 
 처음 수정은 시각 비교였습니다. 지난 시간을 재서 조회 간격을 늘리는 방식이고, 시각은 `performance.now()`로 쟀습니다. 한 탭 안에서는 문제가 없습니다. 같은 탭이 같은 기준으로 잰 두 값을 빼기 때문입니다.
 
-고민이 시작된 곳은 탭 사이에서 마지막 조회 시각을 나누려는 생각이었습니다. 계정을 바꾸며 여러 탭을 오가는 유저라면 어느 탭이 언제 조회했는지를 `localStorage`에 두고 서로 읽게 하고 싶어지는데, 그 순간 두 시간 측정 방식의 기준이 달라집니다. MDN 기준으로 `performance.now()`는 `timeOrigin`부터 지난 시간이고, window에서 `timeOrigin`은 탐색이 시작된 시점입니다. 반면 `Date.now()`는 Unix epoch부터 지난 밀리초라 시스템 시각을 따릅니다.
+고민이 시작된 곳은 탭 사이에서 마지막 조회 시각을 나누려는 생각이었습니다. 계정을 바꾸며 여러 탭을 오가는 유저라면 어느 탭이 언제 조회했는지를 `localStorage`에 두고 서로 읽게 하고 싶어지는데, 그 순간 두 시간 측정 방식의 기준이 달라집니다. MDN 기준으로 [`performance.now()`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now)는 [`timeOrigin`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/timeOrigin)부터 지난 시간이고, window에서 `timeOrigin`은 탐색이 시작된 시점입니다. 반면 [`Date.now()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now)는 Unix epoch부터 지난 밀리초라 시스템 시각을 따릅니다.
 
 두 탭의 콘솔에서 아래를 거의 동시에 실행해 보면 차이가 보입니다.
 
@@ -42,7 +42,7 @@ console.log({
 | 탭 A | 1795077419961 | 1575.3 | 0.2 |
 | 탭 B | 1795077419961 | 16.9 | 0.3 |
 
-`Date.now()`는 두 탭이 같은 값을 냈고, `performance.now()`는 각 탭이 열린 시점부터 세어서 서로 다른 값이 나왔습니다. 탭 사이에서 시각을 나누려면 `timeOrigin`을 더해 절대 시각으로 맞추거나 `Date.now()`를 써야 합니다. 그런데 MDN은 `Date.now()`가 시스템이나 유저의 시각 조정에 영향을 받는다고 적고 있고, `performance.now()`는 OS가 잠든 동안 흐르지 않는 브라우저가 있다고 적고 있습니다. 오래 열려 있는 탭이 대상인 이 문제에서는 어느 쪽을 골라도 따로 따져야 할 것이 남습니다.
+`Date.now()`는 두 탭이 같은 값을 냈고, `performance.now()`는 각 탭이 열린 시점부터 세어서 서로 다른 값이 나왔습니다. 탭 사이에서 시각을 나누려면 `timeOrigin`을 더해 절대 시각으로 맞추거나 `Date.now()`를 써야 합니다. 그런데 MDN은 `Date.now()`가 [시스템 시계 조정](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now#performance.now_vs._date.now)에 영향을 받는다고 적고 있고, `performance.now()`는 [OS가 잠든 동안 흐르지 않는](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now#ticking_during_sleep) 브라우저가 있다고 적고 있습니다. 오래 열려 있는 탭이 대상인 이 문제에서는 어느 쪽을 골라도 따로 따져야 할 것이 남습니다.
 
 ## 조작 표시 하나로 바꾼 구조
 
@@ -112,7 +112,7 @@ export function startAutoRefresh(fetchUnread, userAgent = navigator.userAgent) {
 
 ## 판단과 비용
 
-저는 시간 측정 기준을 맞추는 일보다 **시간 비교가 필요 없는 구조를 고르는 쪽이 낫다**고 생각했습니다. 시각 비교는 탭 하나 안에서만 쓰면 문제가 없고, 탭끼리 나누려는 순간부터 기준이 어긋납니다. 마지막 조회 뒤 조작이 있었는지는 탭 안에서 참과 거짓으로 끝나서, 나눌 값도 맞출 기준도 없습니다.
+저는 시간 측정 기준을 맞추는 일보다 **조작했는지만 보는 구조를 고르는 쪽이 낫다**고 생각했습니다. 시각 비교는 탭 하나 안에서만 쓰면 문제가 없고, 탭끼리 나누려는 순간부터 기준이 어긋납니다. 마지막 조회 뒤 조작이 있었는지는 탭 안에서 참과 거짓으로 끝나서, 나눌 값도 맞출 기준도 없습니다.
 
 치르는 비용은 두 가지입니다. 하나는 앞서 본 대로 조작한 뒤에도 다음 조회 시점까지 이전 간격이 남는다는 점입니다. 다른 하나는 나란히 띄운 탭이 각자 조회한다는 점이고, 이건 공유 구조의 관리 비용보다 작다고 판단했습니다.
 

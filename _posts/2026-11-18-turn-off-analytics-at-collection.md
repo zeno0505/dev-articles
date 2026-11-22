@@ -17,9 +17,9 @@ description: "최근 트래픽이 비정상적으로 늘어난 현상을 조사�
 
 Mixpanel 자바스크립트 SDK는 기본 속성 `$browser`를 `navigator.userAgent`에서 만듭니다. 소스의 `_.info.browser`는 문자열에 `Chrome`이 포함되면 브라우저 이름을 Chrome으로 적습니다. HeadlessChrome이라는 토큰 안에 이미 `Chrome`이 들어 있으므로, **원문이 HeadlessChrome이어도 리포트의 브라우저 값은 Chrome이 됩니다**. 브라우저 값만으로 헤드리스 트래픽을 가르려고 하면, 일반 Chrome 조회와 구분이 되지 않습니다.
 
-SDK가 기본적으로 거르는 User-Agent 목록은 Googlebot, bingbot처럼 알려진 크롤러 중심입니다. 공식 문서도 그 목록에 없는 봇은 데이터에 영향을 준다고 적혀 있습니다. HeadlessChrome은 그 목록에 없습니다. 그래서 수집을 끌 기준을 Mixpanel 기본 목록에만 두지 않기로 했습니다.
+SDK가 기본적으로 거르는 User-Agent 목록은 Googlebot, bingbot처럼 알려진 크롤러 중심입니다. [Mixpanel 문서](https://docs.mixpanel.com/docs/tracking-best-practices/bot-traffic#exclude-bot-traffic-from-javascript-sdk)도 그 목록에 없는 봇은 데이터에 영향을 준다고 적혀 있습니다. HeadlessChrome은 그 목록에 없습니다. 그래서 수집을 끌 기준을 Mixpanel 기본 목록에만 두지 않기로 했습니다.
 
-자동화 여부는 User-Agent만의 문제가 아닙니다. `navigator.webdriver`는 사용자 에이전트가 자동화로 조종되는지를 알리는 표준 속성입니다. MDN 기준으로 Chrome에서는 `--headless` 또는 `--enable-automation`을 쓰면 이 값이 true입니다. isbot은 User-Agent 문자열만 보므로, 수집 가드에는 이 플래그를 같이 두기로 했습니다.
+자동화 여부는 User-Agent만의 문제가 아닙니다. [`navigator.webdriver`](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/webdriver)는 사용자 에이전트가 자동화로 조종되는지를 알리는 표준 속성입니다. [MDN 기준](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/webdriver)으로 Chrome에서는 `--headless` 또는 `--enable-automation`을 쓰면 이 값이 true입니다. isbot은 User-Agent 문자열만 보므로, 수집 가드에는 이 플래그를 같이 두기로 했습니다.
 
 ```mermaid
 flowchart TD
@@ -34,7 +34,7 @@ flowchart TD
 
 ## 초기화 전에 두는 수집 가드
 
-자동화로 보이면 Mixpanel SDK의 `init` 자체를 건너뛰기로 했습니다. 꺼진 뒤에도 초기화 전에 쌓아 둔 이벤트가 나중에 나가면 안 되므로, 그때 대기열을 비우고, 이후 식별·추적 호출도 보내지 않습니다. 공식 문서의 `opt_out_tracking()`은 초기화 이후에 쓰는 방법이라, 이 가드에는 쓰지 않았습니다.
+자동화로 보이면 Mixpanel SDK의 `init` 자체를 건너뛰기로 했습니다. 꺼진 뒤에도 초기화 전에 쌓아 둔 이벤트가 나중에 나가면 안 되므로, 그때 대기열을 비우고, 이후 식별·추적 호출도 보내지 않습니다. [Mixpanel 문서 예시](https://docs.mixpanel.com/docs/tracking-methods/sdks/javascript#opt-out-of-tracking)처럼 `opt_out_tracking()`은 초기화 이후에 쓰는 방법이라, 이 가드에는 쓰지 않았습니다.
 
 봇 User-Agent를 제 정규식으로 직접 들고 있으면, 새 봇이 나올 때마다 목록을 따라가야 합니다. 그래서 User-Agent 판정만 isbot 5.2.2에 맡기고, `navigator.webdriver`는 따로 같이 보기로 했습니다. 패턴 최신화는 패키지 버전을 올려 받습니다. isbot 5.2의 export는 `isBot(ua)`입니다. 아래는 같은 구조로 새로 쓴 예시입니다. 프로젝트 토큰이나 서비스 코드가 아닙니다.
 

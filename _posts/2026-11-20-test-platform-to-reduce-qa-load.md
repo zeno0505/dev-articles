@@ -38,7 +38,7 @@ description: "에이전트 덕에 개발이 쉬워진 만큼 버그도 늘었고
 왜 그 요소가 집혔는지는 agent-browser의 [공개 저장소](https://github.com/vercel-labs/agent-browser)를 열어 작동 방식을 뜯어보고 알았습니다. 같은 글자를 찾는 명령인데 `snapshot`과 `find text`는 서로 다른 것을 읽었습니다.
 
 - `snapshot`은 CDP의 `Accessibility.getFullAXTree`로 접근성 트리를 만들어 텍스트로 돌려줍니다. 화면에 나오는 요소만 들어가고 스크립트의 글자는 들어가지 않습니다.
-- `find text`는 문서의 모든 요소를 훑어 자식 요소가 없는 요소 가운데 `textContent`에 글자가 들어 있는 것을 집습니다. `textContent`는 MDN에 따르면 `script`와 `style`을 포함한 모든 요소의 내용을 가져옵니다. 자식이 없는 `<script>`가 그대로 걸립니다.
+- `find text`는 문서의 모든 요소를 훑어 자식 요소가 없는 요소 가운데 `textContent`에 글자가 들어 있는 것을 집습니다. `textContent`는 [MDN에 따르면](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#differences_from_innertext) `script`와 `style`을 포함한 모든 요소의 내용을 가져옵니다. 자식이 없는 `<script>`가 그대로 걸립니다.
 - `wait --text`는 `document.body.innerText`에서 글자를 찾습니다. `innerText`는 사람이 읽는 요소만 보여 주고 숨겨진 요소의 글자는 돌려주지 않습니다.
 
 당시 러너의 「보인다」와 「보이지 않는다」 판정은 둘 다 `find text`로 읽고 있었습니다.

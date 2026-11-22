@@ -123,7 +123,7 @@ flowchart LR
 
 ### 분모 추출
 
-레거시 Vue 템플릿에서 이벤트, 조건, 반복을 정규식으로 뽑아 항목마다 id를 붙입니다. 이벤트는 `v-on:click`과 줄임 표기인 `@click`이 모두 Vue 문서에 있는 문법이고, 조건은 `v-if`, `v-else-if`, `v-show`, 반복은 `v-for`입니다. 조건에 쓰인 값이 모두 TC 입력으로 고정되는 값이면 분기가 입력만으로 정해지는 항목(S)이고, 서버 응답에 갈래가 달려 있으면 테스트 서버에서 데이터를 만들어 관측해야 하는 항목(V)으로 분류합니다.
+레거시 Vue 템플릿에서 이벤트, 조건, 반복을 정규식으로 뽑아 항목마다 id를 붙입니다. 이벤트는 `v-on:click`과 줄임 표기인 `@click`이 모두 [Vue 문서](https://vuejs.org/guide/essentials/event-handling.html#listening-to-events)에 있는 문법이고, 조건은 [`v-if`, `v-else-if`, `v-show`](https://vuejs.org/guide/essentials/conditional.html), 반복은 [`v-for`](https://vuejs.org/guide/essentials/list.html#v-for)입니다. 조건에 쓰인 값이 모두 TC 입력으로 고정되는 값이면 분기가 입력만으로 정해지는 항목(S)이고, 서버 응답에 갈래가 달려 있으면 테스트 서버에서 데이터를 만들어 관측해야 하는 항목(V)으로 분류합니다.
 
 ```js
 import { readFileSync } from 'node:fs'
