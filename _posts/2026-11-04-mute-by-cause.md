@@ -1,6 +1,7 @@
 ---
 title: "같은 오류 코드로 중단과 시간 초과를 같이 끄지 않기"
 date: 2026-11-04
+published: false
 categories: [일일 회고]
 description: "axios 0.21.4는 중단과 시간 초과를 ECONNABORTED로 같이 남겨, 브라우저가 끊은 요청만 보고에서 빼고 시간 초과는 남겼습니다."
 ---

@@ -1,6 +1,7 @@
 ---
 title: "정확성 때문에 버린 최적화를 다시 재기"
 date: 2026-11-13
+published: false
 categories: [일일 회고]
 description: "정확성 때문에 버린 분리 문서 직렬화를 다시 넣었더니, innerHTML은 같고 href·src와 XMLSerializer만 갈렸습니다."
 ---
